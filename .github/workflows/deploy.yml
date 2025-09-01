@@ -19,7 +19,6 @@ jobs:
         - name: ACR login
           run: |
             az acr login --name mydockerregis
-        
         - name: Build and push the image
           run: |
             docker build -t mydockerregis.azurecr.io/myapp:latest
