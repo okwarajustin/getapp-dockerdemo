@@ -26,4 +26,4 @@ jobs:
 
         - name: deploy on container instance
           run: |
-            az container create --resource-group myResourceGroup --name mycontainer --image mydockerregis.azurecr.io/myapp:latest --cpu 1 --memory 1.5 --registry-login-server mydockerregis.azurecr.io --registry-username ${{ secrets.AZURE_USERNAME }} --registry-password ${{ secrets.AZURE_PASSWORD }} --dns-name-label mycontainer --ports 3000
+            az container create --resource-group RG --name mycontainer --image mydockerregis.azurecr.io/myapp:latest --cpu 1 --memory 1.5 --registry-login-server mydockerregis.azurecr.io --registry-username ${{ secrets.AZURE_USERNAME }} --registry-password ${{ secrets.AZURE_PASSWORD }} --dns-name-label mycontainer --ports 3000
