@@ -21,9 +21,21 @@ jobs:
             az acr login --name mydockerregis
         - name: Build and push the image
           run: |
-            docker build -t mydockerregis.azurecr.io/myapp:latest .
-            docker push mydockerregis.azurecr.io/myapp:latest
+            docker build -t mydockerregis.azurecr.io/myapp:${{ github.sha }} .
+            docker push mydockerregis.azurecr.io/myapp:${{ github.sha }}
 
-        - name: deploy on container instance
-          run: |
-            az container create --resource-group RG --name mydockerregis --image mydockerregis.azurecr.io/myapp:latest --cpu 1 --memory 1.5 --os-type Linux --location EastUS --registry-login-server mydockerregis.azurecr.io --registry-username ${{ secrets.AZURE_USERNAME }} --registry-password ${{ secrets.AZURE_PASSWORD }} --dns-name-label mycontainer --ports 3000
+        - name: 'Deploy to Azure container instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: RG
+            name: mydockerregis
+            image: mydockerregis.azurecr.io/myapp:${{ github.sha }}
+            cpu: 1
+            memory: 1.5
+            os-type: Linux
+            location: 'eastus'
+            registry-login-server: mydockerregis.azurecr.io
+            registry-username: ${{ secrets.AZURE_USERNAME }}
+            registry-password: ${{ secrets.AZURE_PASSWORD }}
+            dns-name-label: mygettingstartedapp
+            ports: 3000 
